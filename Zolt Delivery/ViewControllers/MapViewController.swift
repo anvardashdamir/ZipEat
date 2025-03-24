@@ -91,6 +91,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
      // MARK: - CLLocationManagerDelegate
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let region = MKCoordinateRegion(
+                center: location.coordinate,
+                latitudinalMeters: 500,
+                longitudinalMeters: 500
+            )
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:

@@ -138,6 +138,4 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         navigationController?.pushViewController(selectedViewController, animated: true)
     }
-    
 }
-

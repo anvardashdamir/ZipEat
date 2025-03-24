@@ -139,34 +139,20 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     // MARK: - Category Actions
 
     @objc func loadPizzaItems() {
-//        updateMenuAppearance(selected: pizzaButton)
         viewModel.loadItems(for: .pizza)
     }
     
     @objc func loadBurgerItems() {
-//        updateMenuAppearance(selected: burgerButton)
         viewModel.loadItems(for: .burger)
     }
     
     @objc func loadSaladItems() {
-//        updateMenuAppearance(selected: saladButton)
         viewModel.loadItems(for: .salad)
     }
     
     @objc func loadBeerItems() {
-//        updateMenuAppearance(selected: drinkButton)
         viewModel.loadItems(for: .drink)
     }
-    
-//    func updateMenuAppearance(selected button: UIButton) {
-//        selectedButton?.setTitleColor(.black, for: .normal)
-//        selectedButton?.backgroundColor = .white
-//        
-//        selectedButton = button
-//        
-//        selectedButton?.setTitleColor(.white, for: .normal)
-//        selectedButton?.backgroundColor = .systemGray
-//    }
         
     // MARK: - CollectionView DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
