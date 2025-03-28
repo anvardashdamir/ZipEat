@@ -84,10 +84,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupLayout()
         setupBindings()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(updateFoodList), name: NSNotification.Name("BasketUpdated"), object: nil)
+        
         foodListView.delegate = self
         foodListView.dataSource = self
         foodListView.register(FoodCollectionViewCell.self, forCellWithReuseIdentifier: "cellID")
         viewModel.loadItems(for: .pizza)
+    }
+    
+    @objc func updateFoodList() {
+        foodListView.reloadData()
     }
     
     // MARK: - ViewModel Bindings

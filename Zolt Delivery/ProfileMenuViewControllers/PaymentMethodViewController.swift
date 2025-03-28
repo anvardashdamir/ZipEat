@@ -9,6 +9,15 @@ import UIKit
 
 class PaymentMethodViewController: UIViewController {
     
+    let paymentTitle: UILabel = {
+        var label = UILabel()
+        label.text = "Payment Methods"
+        label.font = .boldSystemFont(ofSize: 32)
+        label.textColor = .black
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let googlePayButton = PaymentMethodButton(title: "Google Pay", iconName: "g.circle.fill")
     let applePayButton = PaymentMethodButton(title: "Apple Pay", iconName: "applelogo")
     let creditCardButton = PaymentMethodButton(title: "Credit Card", iconName: "creditcard")
@@ -21,6 +30,8 @@ class PaymentMethodViewController: UIViewController {
     }
     
     func setupUI() {
+        view.addSubview(paymentTitle)
+        
         let stackView = UIStackView(arrangedSubviews: [googlePayButton, applePayButton, creditCardButton, cashButton])
         stackView.axis = .vertical
         stackView.spacing = 12
@@ -28,7 +39,10 @@ class PaymentMethodViewController: UIViewController {
         view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            paymentTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            paymentTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
+            stackView.topAnchor.constraint(equalTo: paymentTitle.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])

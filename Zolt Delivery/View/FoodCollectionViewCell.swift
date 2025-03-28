@@ -88,10 +88,17 @@ class FoodCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        NotificationCenter.default.addObserver(self, selector: #selector(basketUpdated), name: NSNotification.Name("BasketUpdated"), object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func basketUpdated() {
+        guard let item = foodItem else { return }
+        isAddedToCart = BasketManager.shared.getBasketItems().contains { $0.title == item.title }
+        updateButtonAppearance()
     }
     
     func setupViews() {
@@ -149,7 +156,7 @@ class FoodCollectionViewCell: UICollectionViewCell {
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
         priceLabel.text = item.price
-        
+                
         // Check if item is already in the basket
         isAddedToCart = BasketManager.shared.getBasketItems().contains { $0.title == item.title }
         updateButtonAppearance()

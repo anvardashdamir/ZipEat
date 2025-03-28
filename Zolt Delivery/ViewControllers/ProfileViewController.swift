@@ -79,7 +79,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // MARK: - Tableview name and icon list
     let menuItems = [
-        ("Account", "person.crop.circle"),
         ("Order History", "cart.circle"),
         ("Payment Methods", "creditcard.circle"),
         ("Get Help", "questionmark.circle")
@@ -200,12 +199,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         switch indexPath.row {
         case 0:
-            selectedViewController = AccountViewController()
-        case 1:
             selectedViewController = OrderHistoryViewController()
-        case 2:
+        case 1:
             selectedViewController = PaymentMethodViewController()
-        case 3:
+        case 2:
             selectedViewController = GetHelpViewController()
         default:
             return

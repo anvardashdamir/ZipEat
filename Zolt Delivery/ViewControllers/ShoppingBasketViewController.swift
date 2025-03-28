@@ -60,6 +60,8 @@ class ShoppingBasketViewController: UIViewController, UITableViewDelegate, UITab
         BasketManager.shared.clearBasket()
         basketItems.removeAll()
         orderList.reloadData()
+        
+        NotificationCenter.default.post(name: NSNotification.Name("BasketUpdated"), object: nil)
     }
     
     // MARK: - Lifecycle
@@ -137,10 +139,9 @@ class ShoppingBasketViewController: UIViewController, UITableViewDelegate, UITab
             basketItems = BasketManager.shared.getBasketItems()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
+            
+            NotificationCenter.default.post(name: NSNotification.Name("BasketUpdated"), object: nil)
         }
     }
 
 }
-
-
-// when clear basket Added should become Add again

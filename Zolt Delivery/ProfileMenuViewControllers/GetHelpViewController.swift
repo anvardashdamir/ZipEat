@@ -57,11 +57,26 @@ class GetHelpViewController: UIViewController, UITableViewDelegate, UITableViewD
     ]
 
     let helpDetails = [
-        "FAQ": "Frequently asked questions and answers.",
-        "Contact Support": "Contact our support team for assistance.",
+        "FAQ": """
+        Frequently asked questions and answers.
+        
+        Q: How do I change my name and profile photo?
+        A: Go to Profile > Client ID > Input new name and photo.
+        
+        Q: What payment methods do you accept?
+        A: We accept credit cards (Visa, Mastercard), ApplePay, GooglePay, and Cash.
+                
+        Q: What are your business hours?
+        A: Our support team is available Monday-Friday, 9:00 AM to 6:00 PM local time.
+        
+        Q: Can I change my account email address?
+        A: No, you can't change it.
+        """,
+        
+        "Contact Support": "Contact our support team for assistance:\n+994 55 123 45 67",
         "Adresse": "18 Liberty Street, Baku, Azerbaijan"
     ]
-
+    
     var expandedRows: Set<Int> = []
 
     private func setupUI() {
