@@ -90,7 +90,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     
      // MARK: - CLLocationManagerDelegate
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             let region = MKCoordinateRegion(
@@ -125,7 +124,5 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             break
         }
     }
-    
-    
 }
 

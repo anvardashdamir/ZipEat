@@ -11,8 +11,7 @@ class ShoppingBasketViewController: UIViewController, UITableViewDelegate, UITab
     
     var basketItems: [FoodItem] = []
 
-    // MARK: - UI Components
-    
+    // MARK: - UI Elements
     let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Tasty choices"
@@ -51,28 +50,13 @@ class ShoppingBasketViewController: UIViewController, UITableViewDelegate, UITab
         button.addTarget(self, action: #selector(orderFood), for: .touchUpInside)
         return button
     }()
-    
-    @objc func orderFood() {
-        print("Foods ordered successfully...")
-    }
-    
-    @objc func clearBasket() {
-        BasketManager.shared.clearBasket()
-        basketItems.removeAll()
-        orderList.reloadData()
         
-        NotificationCenter.default.post(name: NSNotification.Name("BasketUpdated"), object: nil)
-    }
-    
     // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
         orderList.delegate = self
         orderList.dataSource = self
-        
         setupLayout()
     }
     
@@ -112,7 +96,6 @@ class ShoppingBasketViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     // MARK: - TableView Methods
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return basketItems.count
     }
@@ -143,5 +126,26 @@ class ShoppingBasketViewController: UIViewController, UITableViewDelegate, UITab
             NotificationCenter.default.post(name: NSNotification.Name("BasketUpdated"), object: nil)
         }
     }
-
+    
+    // MARK: - Actions
+    @objc func orderFood() {
+        if !basketItems.isEmpty {
+            let alert = UIAlertController(title: "Your Food Ordered", message: "Thank you for purchasing from us!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .default))
+            present(alert, animated: true, completion: nil)
+            clearBasket()
+        } else {
+            let alert = UIAlertController(title: "Didn't add food", message: "Please add food to your basket!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .default))
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func clearBasket() {
+        BasketManager.shared.clearBasket()
+        basketItems.removeAll()
+        orderList.reloadData()
+        
+        NotificationCenter.default.post(name: NSNotification.Name("BasketUpdated"), object: nil)
+    }
 }

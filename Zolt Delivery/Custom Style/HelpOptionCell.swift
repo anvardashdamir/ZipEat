@@ -8,8 +8,10 @@
 import UIKit
 
 class HelpOptionCell: UITableViewCell {
+    
     static let identifier = "HelpOptionCell"
     
+    // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)

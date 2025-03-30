@@ -10,9 +10,9 @@ import Foundation
 
 class BasketManager {
     
-    static let shared = BasketManager()  // Singleton instance
+    static let shared = BasketManager()
     
-    private init() {} // Prevents creating multiple instances
+    private init() {}
     
     private var basketItems: [FoodItem] = []
     
@@ -35,7 +35,7 @@ class BasketManager {
         return basketItems
     }
     
-    // Removes all items at once in basket menu
+    // Removes all items at once from basket menu
     func clearBasket() {
         basketItems.removeAll()
     }

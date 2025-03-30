@@ -9,6 +9,7 @@ import UIKit
 
 class ShoppingBasketViewCell: UITableViewCell {
     
+    // MARK: - UI Elements
     let foodImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -75,21 +76,16 @@ class ShoppingBasketViewCell: UITableViewCell {
     
     // MARK: - Setup Views
     func setupViews() {
-        
-        // Add title and subtitle to text stack
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(subtitleLabel)
         
-        // Add image, text stack, and price to main stack
         mainStackView.addArrangedSubview(foodImageView)
         mainStackView.addArrangedSubview(textStackView)
         mainStackView.addArrangedSubview(priceLabel)
         
-        // Add main stack to contentView
         contentView.addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
-            
             foodImageView.widthAnchor.constraint(equalToConstant: 80),
             foodImageView.heightAnchor.constraint(equalToConstant: 80),
             
@@ -109,6 +105,4 @@ class ShoppingBasketViewCell: UITableViewCell {
          subtitleLabel.text = item.subtitle
          priceLabel.text = "\(item.price)"
      }
-
-
 }

@@ -1,5 +1,5 @@
 //
-//  SignPage.swift
+//  SignInViewController.swift
 //  Zolt Delivery
 //
 //  Created by Enver Dashdemirov on 12.03.25.
@@ -7,8 +7,9 @@
 
 import UIKit
 
-class SignPage: UIViewController {
+class SignInViewController: UIViewController {
     
+    // MARK: - UI Elements
     private let loginLabel: UILabel = {
         let label = UILabel()
         label.text = "Login"
@@ -56,28 +57,23 @@ class SignPage: UIViewController {
     private let frontView = LoginView()
     private let backView = SignUpView()
     
+    // MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupUI()
     }
     
-    
-    // Dismiss keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        pressureInput.resignFirstResponder()
-//    }
-    
+        
+    // MARK: Layout
     private func setupUI() {
         view.addSubview(registerStackView)
         registerStackView.addArrangedSubview(loginLabel)
         registerStackView.addArrangedSubview(toggleSwitch)
         registerStackView.addArrangedSubview(signUPLabel)
-//        view.addSubview(toggleSwitch)
         view.addSubview(flipContainer)
         
         flipContainer.addSubview(frontView)
@@ -109,12 +105,7 @@ class SignPage: UIViewController {
             registerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             registerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             registerStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
-            
-//            toggleSwitch.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            toggleSwitch.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100),
-
         ])
-        
         backView.isHidden = true
     }
     
@@ -161,19 +152,16 @@ class LoginView: UIView {
         buttonText.backgroundColor = .white
         buttonText.layer.cornerRadius = 10
         
-        // Add subviews
         addSubview(titleLabel)
         addSubview(emailText)
         addSubview(passwordText)
         addSubview(buttonText)
         
-        // Disable autoresizing masks
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         emailText.translatesAutoresizingMaskIntoConstraints = false
         passwordText.translatesAutoresizingMaskIntoConstraints = false
         buttonText.translatesAutoresizingMaskIntoConstraints = false
         
-        // Set up constraints
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -199,15 +187,21 @@ class LoginView: UIView {
 
 
 class SignUpView: UIView {
+    
+    private let nameTextField = CustomTextField()
+    private let emailTextField = CustomTextField()
+    private let passwordTextField = PasswordTextField()
+    private let signUpButton = AnimatedButton()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupView(
             title: "Sign Up",
-            name: CustomTextField(),
-            emailText: CustomTextField(),
-            passwordText: PasswordTextField(),
-            buttonText: AnimatedButton()
+            name: nameTextField,
+            emailText: emailTextField,
+            passwordText: passwordTextField,
+            buttonText: signUpButton
         )
     }
     
@@ -236,22 +230,18 @@ class SignUpView: UIView {
         buttonText.layer.cornerRadius = 10
         buttonText.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         
-        
-        // Add subviews
         addSubview(titleLabel)
         addSubview(name)
         addSubview(emailText)
         addSubview(passwordText)
         addSubview(buttonText)
         
-        // Disable autoresizing masks
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         name.translatesAutoresizingMaskIntoConstraints = false
         emailText.translatesAutoresizingMaskIntoConstraints = false
         passwordText.translatesAutoresizingMaskIntoConstraints = false
         buttonText.translatesAutoresizingMaskIntoConstraints = false
         
-        // Set up constraints
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -261,18 +251,15 @@ class SignUpView: UIView {
             name.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             name.heightAnchor.constraint(equalToConstant: 40),
             
-            
             emailText.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 20),
             emailText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             emailText.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             emailText.heightAnchor.constraint(equalToConstant: 40),
             
-            
             passwordText.topAnchor.constraint(equalTo: emailText.bottomAnchor, constant: 20),
             passwordText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             passwordText.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             passwordText.heightAnchor.constraint(equalToConstant: 40),
-            
             
             buttonText.topAnchor.constraint(equalTo: passwordText.bottomAnchor, constant: 20),
             buttonText.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -283,6 +270,15 @@ class SignUpView: UIView {
     }
     
     @objc func signUpTapped() {
+        guard let name = nameTextField.text, !name.isEmpty,
+              let email = emailTextField.text, !email.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            return
+        }
+        
+        UserDefaultsManager.shared.saveUser(name: name, email: email, password: password, image: UIImage(named: "person.circle"))
+        print("User saved: \(UserDefaultsManager.shared.getUser())")
+        
         if let parentVC = findViewController() {
             let vc = MainViewController()
             vc.modalPresentationStyle = .fullScreen

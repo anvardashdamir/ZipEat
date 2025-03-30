@@ -71,11 +71,6 @@ class AnimatedButton: UIButton {
         }
     }
     
-    
-    
-    
-    
-    
     @objc private func buttonPressed() {
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.transform = CGAffineTransform(translationX: 3, y: 3)

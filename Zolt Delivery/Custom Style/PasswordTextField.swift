@@ -20,17 +20,10 @@ class PasswordTextField: UITextField {
     }
 
     private func setupTextField() {
-        // Set the width and height
         self.frame.size = CGSize(width: 200, height: 40)
-
-        // Set the border radius
         self.layer.cornerRadius = 5
-
-        // Set the border color and width
         self.layer.borderColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 1).cgColor
         self.layer.borderWidth = 2
-
-        // Set the background color
         self.backgroundColor = .white
 
         // Set the shadow

@@ -12,6 +12,7 @@ class FoodCollectionViewCell: UICollectionViewCell {
     var isAddedToCart = false
     var foodItem: FoodItem?
     
+    // MARK: - UI Elements
     let foodImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -46,11 +47,6 @@ class FoodCollectionViewCell: UICollectionViewCell {
     
     let addButton: AnimatedButton = {
         let button = AnimatedButton()
-//        button.setTitleColor(.black, for: .normal)
-//        button.layer.cornerRadius = 5
-//        button.layer.masksToBounds = true
-//        button.layer.borderWidth = 0.25
-//        button.layer.borderColor = UIColor.black.cgColor
         button.setTitle("Add", for: .normal)
         button.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
         return button
@@ -64,27 +60,7 @@ class FoodCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    @objc func toggleButton(_ sender: UIButton) {
-        
-        guard let item = foodItem else { return } // Ensure there's an item
-
-        isAddedToCart.toggle()
-
-        if isAddedToCart {
-            BasketManager.shared.addToBasket(item: item)
-        } else {
-            BasketManager.shared.removeFromBasket(item: item)
-        }
-        
-        updateButtonAppearance()
-    }
-    
-    func updateButtonAppearance() {
-//        addButton.backgroundColor = isAddedToCart ? .black : .white
-//        addButton.setTitleColor(isAddedToCart ? .white : .black, for: .normal)
-        addButton.setTitle(isAddedToCart ? "Added" : "Add", for: .normal)
-    }
-    
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -95,20 +71,12 @@ class FoodCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func basketUpdated() {
-        guard let item = foodItem else { return }
-        isAddedToCart = BasketManager.shared.getBasketItems().contains { $0.title == item.title }
-        updateButtonAppearance()
-    }
-    
+    // MARK: Layout
     func setupViews() {
-        
-        // This setup gives shadow effect to cells.
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
         contentView.layer.masksToBounds = true
         
-        // Shadow effect to cell layer
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.15
         layer.shadowOffset = CGSize(width: 0, height: 4)
@@ -148,9 +116,32 @@ class FoodCollectionViewCell: UICollectionViewCell {
 
         ])
     }
+
+    
+    // MARK: - Action
+    @objc func toggleButton(_ sender: UIButton) {
+        guard let item = foodItem else { return }
+        isAddedToCart.toggle()
+        if isAddedToCart {
+            BasketManager.shared.addToBasket(item: item)
+        } else {
+            BasketManager.shared.removeFromBasket(item: item)
+        }
+        updateButtonAppearance()
+    }
+    
+    func updateButtonAppearance() {
+        addButton.setTitle(isAddedToCart ? "Added" : "Add", for: .normal)
+    }
+    
+    @objc private func basketUpdated() {
+        guard let item = foodItem else { return }
+        isAddedToCart = BasketManager.shared.getBasketItems().contains { $0.title == item.title }
+        updateButtonAppearance()
+    }
     
     func configure(with item: FoodItem) {
-        self.foodItem = item // Store the item reference
+        self.foodItem = item
         
         foodImageView.image = UIImage(named: item.imageName)
         titleLabel.text = item.title

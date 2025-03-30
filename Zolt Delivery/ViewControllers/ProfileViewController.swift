@@ -9,9 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    
     // MARK: - UI Elements
-    
     let profileTitle: UILabel = {
         let label = UILabel()
         label.text = "Profile"
@@ -29,7 +27,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         imageView.layer.borderColor = UIColor.black.cgColor
         return imageView
     }()
-
+    
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "John Smith"
@@ -37,10 +35,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         label.textAlignment = .left
         return label
     }()
-
-    let clientIDLabel: UILabel = {
+    
+    let clientEmailLabel: UILabel = {
         let label = UILabel()
-        label.text = "Client ID: 123456"
+        label.text = "Client Email: 123456"
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.textColor = .darkGray
         label.textAlignment = .left
@@ -53,7 +51,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.black.cgColor
         imageView.backgroundColor = UIColor.white
-        imageView.isUserInteractionEnabled = true
         
         imageView.layer.shadowColor = UIColor.black.cgColor
         imageView.layer.shadowOffset = CGSize(width: 4, height: 4)
@@ -77,13 +74,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }()
     
     
-    // MARK: - Tableview name and icon list
-    let menuItems = [
-        ("Order History", "cart.circle"),
-        ("Payment Methods", "creditcard.circle"),
-        ("Get Help", "questionmark.circle")
-    ]
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -94,30 +85,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(editProfileTapped))
-        profileEdit.addGestureRecognizer(tapGesture)
+        profileImageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectProfileImage))
+        profileImageView.addGestureRecognizer(tapGesture)
         
         loadProfileData()
     }
-    
-    func loadProfileData() {
-        if let savedName = UserDefaults.standard.string(forKey: "name") {
-            nameLabel.text = savedName
-        }
-        
-        if let imageData = UserDefaults.standard.data(forKey: "image"),
-           let image = UIImage(data: imageData) {
-            profileImageView.image = image
-        }
-    }
-    
-    // MARK: - Navigate to ProfileEditViewController
-    @objc func editProfileTapped() {
-        let editVC = ProfileEditViewController()
-        editVC.delegate = self
-        navigationController?.pushViewController(editVC, animated: true)
-    }
-    
+     
+    // MARK: - Layout
     func setupLayout() {
         view.addSubview(profileTitle)
         view.addSubview(profileEdit)
@@ -126,12 +101,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         profileEdit.addSubview(profileImageView)
         profileEdit.addSubview(nameLabel)
-        profileEdit.addSubview(clientIDLabel)
+        profileEdit.addSubview(clientEmailLabel)
         
         profileTitle.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        clientIDLabel.translatesAutoresizingMaskIntoConstraints = false
+        clientEmailLabel.translatesAutoresizingMaskIntoConstraints = false
         profileEdit.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -154,9 +129,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             nameLabel.topAnchor.constraint(equalTo: profileEdit.topAnchor, constant: 24),
             nameLabel.trailingAnchor.constraint(equalTo: profileEdit.trailingAnchor, constant: -16),
             
-            clientIDLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            clientIDLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
-            clientIDLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+            clientEmailLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            clientEmailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            clientEmailLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
             
             tableView.topAnchor.constraint(equalTo: profileEdit.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -169,22 +144,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             logoutButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
-    // MARK: - Log out action
-    @objc func logoutTapped() {
-        let vc = SignPage()
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true, completion: nil)
-    }
-    
+        
     // MARK: - TableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItems.count
+        return profileItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let item = menuItems[indexPath.row]
+        let item = profileItems[indexPath.row]
         cell.textLabel?.text = item.0
         cell.textLabel?.font = .systemFont(ofSize: 18)
         cell.imageView?.image = UIImage(systemName: item.1)?.withTintColor(.black, renderingMode: .alwaysOriginal) // Black icons
@@ -209,13 +177,61 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         navigationController?.pushViewController(selectedViewController, animated: true)
     }
-}
+    
+    // MARK: - Actions
+    func loadProfileData() {
+        if let savedName = UserDefaults.standard.string(forKey: "userName") {
+            nameLabel.text = savedName
+        }
+        
+        if let savedEmail = UserDefaults.standard.string(forKey: "userEmail") {
+            clientEmailLabel.text = savedEmail
+        }
+        
+        if let imageData = UserDefaults.standard.data(forKey: "profileImage"),
+           let savedImage = UIImage(data: imageData) {
+            profileImageView.image = savedImage
+        }
+    }
 
-extension ProfileViewController: ProfileEditDelegate {
-    func didUpdateProfile(name: String, image: UIImage?) {
-        nameLabel.text = name
-        if let newImage = image {
-            profileImageView.image = newImage
+    @objc func logoutTapped() {
+        let vc = SignInViewController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func selectProfileImage() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        picker.allowsEditing = true
+        present(picker, animated: true)
+    }
+    
+    // Handle the image selection
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let selectedImage = info[.editedImage] as? UIImage ?? info[.originalImage] as? UIImage {
+            profileImageView.image = selectedImage
+            
+            // Save the image using UserDefaultsManager
+            UserDefaultsManager.shared.saveUser(
+                name: nameLabel.text ?? "",
+                email: clientEmailLabel.text ?? "",
+                password: "",
+                image: selectedImage
+            )
+        }
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+    
+    func saveProfileImage(image: UIImage) {
+        if let imageData = image.jpegData(compressionQuality: 0.8) {
+            UserDefaults.standard.set(imageData, forKey: "profileImage")
         }
     }
 }
+

@@ -4,12 +4,12 @@
 //
 //  Created by Enver Dashdemirov on 12.03.25.
 //
+
 import UIKit
 
 class CustomTextField: UITextField {
     
-    // MARK: - Properties
-    
+    // MARK: - UI Elements
     private let label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
@@ -35,27 +35,24 @@ class CustomTextField: UITextField {
     }()
     
     // MARK: - Initializers
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
-        setupTextFieldStyle() // Add styling from PasswordTextField
+        setupTextFieldStyle()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
-        setupTextFieldStyle() // Add styling from PasswordTextField
+        setupTextFieldStyle()
     }
     
     // MARK: - Setup UI
-    
     private func setupUI() {
         addSubview(label)
         addSubview(topline)
         addSubview(underline)
         
-        // Add constraints
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             label.topAnchor.constraint(equalTo: topAnchor, constant: 10),
@@ -71,13 +68,11 @@ class CustomTextField: UITextField {
             underline.widthAnchor.constraint(equalToConstant: 0)
         ])
         
-        // Add text field events
         addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
         addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
     }
     
     // MARK: - Apply PasswordTextField Styling
-    
     private func setupTextFieldStyle() {
         // Set the border radius
         self.layer.cornerRadius = 5
@@ -112,7 +107,6 @@ class CustomTextField: UITextField {
     }
     
     // MARK: - Text Field Events
-    
     @objc private func textFieldDidBeginEditing() {
         // Animate label
         UIView.animate(withDuration: 0.5) {
@@ -158,7 +152,6 @@ class CustomTextField: UITextField {
 }
 
 // MARK: - UIColor Extension for Hex Support
-
 extension UIColor {
     convenience init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

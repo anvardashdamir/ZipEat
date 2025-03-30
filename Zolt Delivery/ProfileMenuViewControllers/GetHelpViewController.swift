@@ -10,6 +10,7 @@ import UIKit
 
 class GetHelpViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +38,7 @@ class GetHelpViewController: UIViewController, UITableViewDelegate, UITableViewD
         return tableView
     }()
 
+    // MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -99,6 +101,7 @@ class GetHelpViewController: UIViewController, UITableViewDelegate, UITableViewD
         ])
     }
 
+    // MARK: - TableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return helpOptions.count
     }
@@ -121,7 +124,6 @@ class GetHelpViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             expandedRows.insert(indexPath.row)
         }
-
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }

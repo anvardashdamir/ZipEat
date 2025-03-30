@@ -8,6 +8,7 @@
 import UIKit
 
 class NameTextField: UITextField {
+    
     init() {
         super.init(frame: .zero)
         setupTextField()
@@ -19,10 +20,7 @@ class NameTextField: UITextField {
     }
     
     private func setupTextField() {
-        // Background color
         backgroundColor = UIColor(red: 34/255, green: 38/255, blue: 48/255, alpha: 1) // #222630
-        
-        // Text and placeholder
         textColor = .white
         attributedPlaceholder = NSAttributedString(
             string: "Enter Name",
@@ -32,17 +30,16 @@ class NameTextField: UITextField {
         // Border
         layer.borderWidth = 2
         layer.borderColor = UIColor(red: 43/255, green: 48/255, blue: 64/255, alpha: 1).cgColor // #2B3040
-        layer.cornerRadius = 8 // Rounded corners (similar to rounded-lg)
+        layer.cornerRadius = 8
         
         // Padding
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: frame.height)) // Similar to px-4
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: frame.height))
         leftView = paddingView
         leftViewMode = .always
         
-        // Size
         translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 48).isActive = true // Similar to py-3 (12px top/bottom)
-        widthAnchor.constraint(equalToConstant: 280).isActive = true // w-[280px]
+        heightAnchor.constraint(equalToConstant: 48).isActive = true
+        widthAnchor.constraint(equalToConstant: 280).isActive = true
         
         // Focus state (editing)
         addTarget(self, action: #selector(editingDidBegin), for: .editingDidBegin)

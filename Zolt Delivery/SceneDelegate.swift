@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        let initialViewController = MainViewController()
+        let initialViewController = SignInViewController()
         window?.rootViewController = initialViewController
         
         // Make the window visible

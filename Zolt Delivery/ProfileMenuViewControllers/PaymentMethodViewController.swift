@@ -9,6 +9,7 @@ import UIKit
 
 class PaymentMethodViewController: UIViewController {
     
+    // MARK: - UI Elements
     let paymentTitle: UILabel = {
         var label = UILabel()
         label.text = "Payment Methods"
@@ -22,7 +23,8 @@ class PaymentMethodViewController: UIViewController {
     let applePayButton = PaymentMethodButton(title: "Apple Pay", iconName: "applelogo")
     let creditCardButton = PaymentMethodButton(title: "Credit Card", iconName: "creditcard")
     let cashButton = PaymentMethodButton(title: "Cash", iconName: "manatsign.circle")
-
+    
+    // MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -37,10 +39,11 @@ class PaymentMethodViewController: UIViewController {
         stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
-
+        
         NSLayoutConstraint.activate([
             paymentTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             paymentTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            paymentTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             stackView.topAnchor.constraint(equalTo: paymentTitle.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -58,7 +61,7 @@ class PaymentMethodViewController: UIViewController {
     }
 }
 
-// Custom Button Class
+    // MARK: - Custom Button Class
 class PaymentMethodButton: UIButton {
     
     private let iconImageView = UIImageView()
@@ -68,7 +71,6 @@ class PaymentMethodButton: UIButton {
     init(title: String, iconName: String) {
         super.init(frame: .zero)
         
-        // Button style
         backgroundColor = .systemGray6
         layer.cornerRadius = 8
         layer.borderWidth = 1
@@ -76,19 +78,16 @@ class PaymentMethodButton: UIButton {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        // Icon ImageView
         iconImageView.image = UIImage(systemName: iconName)
         iconImageView.tintColor = .darkGray
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Title Label
         titleLabelView.text = title
         titleLabelView.font = .systemFont(ofSize: 16, weight: .medium)
         titleLabelView.textColor = .black
         titleLabelView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Checkmark ImageView
         checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
         checkmarkImageView.tintColor = .systemBlue
         checkmarkImageView.isHidden = true

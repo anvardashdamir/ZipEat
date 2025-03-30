@@ -14,7 +14,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     let refreshControl = UIRefreshControl()
 
     // MARK: - Properties
-    
     let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Delicious Food"
@@ -143,7 +142,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
         
     // MARK: - Category Actions
-
     @objc func loadPizzaItems() {
         viewModel.loadItems(for: .pizza)
     }
@@ -177,6 +175,5 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let availableWidth = collectionView.frame.width - padding - spacing
         let widthPerItem = availableWidth / 2
         return CGSize(width: widthPerItem, height: 250)
-        
     }
 }

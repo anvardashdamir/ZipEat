@@ -11,7 +11,7 @@ class OrderHistoryViewController: UIViewController {
 
     var label: UILabel = {
         let label = UILabel()
-        label.text = "No orders yet"
+        label.text = "no orders"
         label.font = .boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
